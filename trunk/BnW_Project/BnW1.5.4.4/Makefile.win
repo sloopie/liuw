@@ -1,0 +1,33 @@
+# Project: BnW
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe -D__DEBUG__
+CC   = gcc.exe -D__DEBUG__
+WINDRES = windres.exe
+RES  = BnW_private.res
+OBJ  = BnWGo!.o $(RES)
+LINKOBJ  = BnWGo!.o $(RES)
+LIBS =  -L"C:/Dev-Cpp/lib" -lconio  -lgmon -pg  -g3 
+INCS =  -I"C:/Dev-Cpp/include" 
+CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include" 
+BIN  = BnW.exe
+CXXFLAGS = $(CXXINCS)   -ansi -pg -g3
+CFLAGS = $(INCS)   -ansi -pg -g3
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before BnW.exe all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o "BnW.exe" $(LIBS)
+
+BnWGo!.o: BnWGo!.cpp system.h C:/Dev-Cpp/include/stdio.h   C:/Dev-Cpp/include/_mingw.h   C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include/stddef.h   C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include/stdarg.h   C:/Dev-Cpp/include/windows.h C:/Dev-Cpp/include/conio2.h   C:/Dev-Cpp/include/conio.h C:/Dev-Cpp/include/c++/3.4.2/iostream   BnWGlobal.h BnWGo!.h BnWDisplay.h BnWSpecial.h
+	$(CC) -c BnWGo!.cpp -o BnWGo!.o $(CFLAGS)
+
+BnW_private.res: BnW_private.rc 
+	$(WINDRES) -i BnW_private.rc --input-format=rc -o BnW_private.res -O coff 

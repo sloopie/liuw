@@ -1,0 +1,331 @@
+\documentclass[a4paper, 10pt, onecolumn, notitlepage]{article}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{txfonts}
+\usepackage{pifont}
+\usepackage{bbm}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\author{Team 1234}
+\title{Applying Voronoi Diagrams to the Redistricting Problem}
+
+\begin{document}
+\maketitle
+\begin{center}
+\textbf{Abstract}
+\end{center}
+Gerrymandering is an issue plaguing legislative redistricting
+resulting from inadequate regulation. Here, we present a novel
+approach to the redistricting problem, an approach that uses a
+state¡¯s population distribution to draw the legislative boundaries.
+Our method utilizes \emph{Voronoi} and population-weighted
+\emph{Voronoiesque} diagrams, and was chosen for the simplicity of
+the generated partition: \emph{Voronoi} regions are contiguous,
+compact, and simple to generate. We found regions drawn with
+Voronoiesque diagrams attained small population variance and
+relative geometric simplicity. As a concrete example, we applied our
+methods to partition New York state. Since New York must be divided
+into 29 legislative districts, each receives roughly 3.44 \% of the
+population. Our Voronoiesque diagram method generated 29 regions
+with an average population of (3.34 $\pm$ 0.74)\%. We discuss
+several refinements that could be made to the methods presented
+which may result in smaller population variation between regions
+while maintaining the simplicity of the regions and objectivity of
+the method. Finally, we provide a short statement that could be
+issued to the voters of New York state to explain our method and
+justify its fairness to them.
+
+\newpage
+\tableofcontents \listoffigures
+\newpage
+
+\section{Introduction}
+Defining Congressional districts has long been a source of
+controversy in the United States. Since the district-drawers are
+chosen by those currently in power, the boundaries are often created
+to influence future elections by grouping an unfavorable minority
+demographic with a favorable majority; this process is called
+\emph{Gerrymandering}. It is common for districts to take on bizarre
+shapes, spanning slim sections of multiple cities and criss-crossing
+the countryside in a haphazard fashion. The only lawful restrictions
+on legislative boundaries stipulate that districts must contain
+equal populations, but the makeup of the districts is left entirely
+to the district-drawers.
+
+In the United Kingdom and Canada, the districts are more compact and
+intuitive. Their success in mitigating Gerrymandering is attributed
+to having turned over the task of boundary-drawing to nonpartisan
+advisory panels. However, these independent com- missions can take
+2--3 years to finalize a new division plan, calling their
+effectiveness into question. It seems clear that the U.S. should
+establish similar unbiased commissions, yet make some effort to
+increase the efficiency of these groups. Accordingly, our goal is to
+develop a small toolbox that aids in the redistricting process.
+Specifically, we will create a model that draws legislative
+boundaries using simple geometric constructions.
+
+\subsection{Current Models}
+The majority of methods for creating districts fall into two
+categories: ones that depend on a current division arrangement (most
+commonly counties) and ones that do not depend on current divisions.
+Most fall into the former category. By using current divisions, the
+problem is reduced to grouping these divisions in a desirable way
+using a multitude of mathematical procedures. Mehrotra et.al. uses
+graph partitioning theory to cluster counties to total population
+variation of around 2\% of the average district size~\cite{8}. Hess
+and Weaver use an iterative process to define population centroids,
+use integer programming to group counties into equally populated
+districts, and then reiterate the process until the centroids reach
+a limit~\cite{5}. Grafinkel and Nemhauser use iterative matrix
+operations to search for district combinations that are contiguous
+and compact~\cite{3}. Kaiser begins with the current districts and
+systematically swaps populations with adjacent districts~\cite{4}.
+All of these methods use counties as their divisions since they
+partition the state into a relatively small number of sections. This
+is necessary because most of the mathematical tools they use become
+slow and imprecise with many divisions. (This is the same as saying
+they become unusable in the limit when the state is divided into
+more continuous sections.) Thus using small divisions, like zip
+codes which on average are 5 times smaller than a county in New
+York, becomes impractical.
+
+The other category of methods is less common. Out of all our
+researched papers and documentation, there were only two methods
+that did not depend on current state divisions. Forrest¡¯s method
+continually divides a state into halves while maintaining population
+equality until the required number of districts is
+satisfied~\cite{4,5}. Hale, Ransom and Ramsey create pie-shaped
+wedges about population centers. This creates homogeneous districts
+which all contain portions of a large city, suburbs, and less
+populated areas~\cite{4}. These approaches are noted for being the
+least biased since their only consideration is population equality
+and do not use preexisting divisions. Also, they are straightforward
+to apply. However, they do not consider any other possibly important
+considerations for districts, such as: geographic freaures of the
+state or how well they encompass cities.
+
+\subsection{Developing Our Approach}
+\label{sec:doa}
+Since our goal is to create new methods that add to
+the diversity of models available to a committee, we should focus on
+creating district boundaries independently of current divisions. Not
+only has this approach not been explored to its fullest, but it is
+not obvious why counties are a good beginning point for a model:
+Counties are created in the same arbitrary way as districts, so they
+might also contain biases, since counties are typically not much
+smaller than districts. Many of the division dependent models end up
+relaxing their boundaries from county lines in order to maintain
+equal populations, which makes the initial assumption of using
+county divisions useless, and also allows for gerrymandering if this
+relaxation method is not well regulated.
+
+Treating the state as continuous (i.e. without preexisting
+divisions) does not lead to any specific type of approach. It gives
+us a lot of freedom, but at the same time we can impose more
+conditions. If the Forrest and Hale et.al. methods are any
+indication, we should focus on keeping cities within districts and
+introduce geographical considerations. (Note that these conditions
+do not have to be considered if we were to treat the problem
+discretely because current divisions, like counties, are probably
+dependent on prominent geographical features.) \textbf{
+\begin{description}
+\item{Goal:} Create a method for redistricting a state by treating the state continuously.
+We require the final districts to contain equal populations and be
+contiguous. Additionally, the districts should be as simple as
+possible (see \ding {72}\ref{sec:notation} for a definition of
+simple) and optimally take into account important geographical
+features of the state.
+\end{description}}
+
+\section{Notations and Definitions}
+\label{sec:notation}
+\begin{itemize}
+\item{\textbf{contiguous:}} A set $R$ is contiguous if it is
+pathwise-connected.
+\item{\textbf{compactness:}} We would like the definition of compactness to be intuitive. One
+way to look at compactness is the ratio of the area of a bounded
+region to the square of its perimeter. In other words
+\begin{displaymath}
+C_R = \frac{A_R}{{p^2}_R} = \frac{1}{4\pi}\varrhoup
+\end{displaymath}
+where $C_R$ is the compactness of region $R$, $A_R$ is the area,
+$p_R$ is the perimeter and $\varrhoup$ is the isoperimetric
+quotient. We do not explicitely use this equation, but we do keep
+this idea in mind when we evaluate our model.
+\item{\textbf{simple:}} Simple regions are compact and convex. Note that this describes a relative
+quality, so we can compare regions by their simplicity.
+\item{\textbf{Voronoi diagrams:}} a partition of the plane with respect to n nodes in the plane
+such that points in the plane are in the same region of a node if
+they are closer to that node than to any other point (for a detailed
+description, see \ding {72}\ref{sec:vd})
+\item{\textbf{generator point:}} a node of a Voronoi diagram
+\item{\textbf{degeneracy:}} the number of districts represented by
+on generator point
+\item{\textbf{Voronoiesque diagram:}} a variation of the Voronoi
+diagram based on equal masses of the regions (see \ding
+{72}\ref{sec:vd})
+\item{\textbf{population center:}} a region of high population
+density
+\end{itemize}
+
+\section{Theoretical Evaluation of our Model}
+How we analyze our model's results is a tricky affair since there is
+disagreement in the redistricting literature on key issues.
+\textbf{Population equality} is the most well defined. By law, the
+populations within districts have to be the same to within a few
+percent of the average population per district. No specific
+percentage is given, but be assumed to be around 5\%.
+
+Creating a successful redistricting model also requires
+\textbf{contiguity}. In accordance with state law, districts need to
+be path-wise connected so that one part of a district cannot be on
+one side of the state and the other part on the other end of the
+state. This requirement is meant to maintain locality and community
+within districts. It does not, however, restrict islands districts
+from including islands if the island¡¯s population is below the
+required population level.
+
+Finally, there is a desire for the districts to be, in one word,
+simple. There is little to no agreement on this characteristic, and
+the most common terminology for this is compact. Taylor de?nes
+simple as a measure of divergence from compactness due to
+indentation of the boundary and gives an equation relating the
+non-reflexive and reflexive interior angles of a region¡¯s
+boundary~\cite{9}. Young provides seven more measures of
+compactness. The \emph{Roeck} test is a ratio of the area of the
+largest inscribable circle in a region to the area of that region.
+The \emph{Schwartzberg} test takes ratio between the adjusted
+perimeter of a region to a the perimeter of a circle whose area is
+the same as the area of the region. The \emph{moment of inertia}
+test measures relative compactness by comparing ``moments of
+inertia'' of different district arrangements. The \emph{Boyce-Clark}
+test compares the difference between points on a district's boundary
+and the center of mass of that district, where zero deviation of
+these differences is most desirable. The \emph{perimeter} test
+compares different district arrangements buy computing the total
+perimeter of each. Finally, there is the \emph{visual} test. This
+test decides simplicity based on intuition~\cite{11}.
+
+Young notes that ``a measure [of compactness] only indicates when a
+plan is more compact than another''~\cite{11}. Thus, \emph{not only
+is there no consensus on how to analyze redistricting proposals, it
+is also difficult to compare them.}
+
+Finally, we remark that the above list only constrains the shape of
+generated districts. We have not mentioned of any other potentially
+relevant feature. For instance, it does not consider how well
+populations are distributed or how well the new district boundaries
+conform with other boundaries, like counties or zip codes. Even with
+this short list, it is clear that we are not in a position to de?ne
+a rigorous definition of simplicity. What we can do, however, is
+identify features of our proposed districts which are simple and
+which are not. This is in line with our goal defined in
+sec.~\ref{sec:doa}, since this list can be provided to a districting
+commission who decide how relevant those simple features are.
+\textbf{We do not explicitly define \emph{simple}, we loosely
+evaluate simplicity based on overall contiguity, compactness,
+convexity, and intuitiveness of the model's districts.}
+
+\section{Method Description}
+Our approach depends heavily on using Voronoi diagrams. We begin
+with a definition, its features, and motivate its application to
+redistricting.
+
+\subsection{Voronoi Diagrams}
+\label{sec:vd} A Voronoi diagram is a set of polygons, called
+Voronoi polygons, formed with respect to $n$ generator points
+contained in the plane. Each generator $p_i$ is contained with a
+Voronoi polygon $V(p_i)$ with the following property:
+\begin{displaymath}
+V(p_i) = \{q|d(p_i,q) \leq d(p_j,q), i\neq j\}\;\textrm{where
+$d(x,y)$ is the distance from point $x$ to $y$}
+\end{displaymath}
+
+That is, the set of all such $q$ is the set of points closer to
+$p_i$ than to any other $p_j$. Then the diagram is given by (see
+fig~\ref{fig:1})
+\begin{displaymath}
+\textbf{V} = \{V(p_1), \ldots , V(p_n)\}
+\end{displaymath}
+
+Note that there is no assumption on the metric we use. Out of the
+many possible choices, we use the three most common:
+\begin{itemize}
+\item{Euclidean Metric:} $d(p,q) = \sqrt{(x_p-x_q)^2+(y_p-y_q)^2}$
+\item{Manhattan Metric:} $d(p,q) = |x_p-x_q| + |y_p-y_q|$
+\item{Uniform Metric:} $d(p,q) = max\{|x_p-x_q| , |y_p-y_q|\}$
+\end{itemize}
+
+\subsubsection{Useful Features of Voronoi Diagrams}
+Here is a summary of relevant properties:
+\begin{itemize}
+\item The Voronoi diagram for a given set of generator points is unique and produces
+polygons, which are path connected.
+\item The nearest generator point to $p_i$ determines an edge of
+$V(p_i)$
+\item The polygonal lines of a Voronoi polygon do not intersect the generator points.
+\item When working in the Euclidean metric, all regions are convex.
+\end{itemize}
+
+These properties are important for our model. The first property
+tells us that regardless of how we choose our generator points we
+generate unique regions. This is good when considering the politics
+of Gerrymandering. The second property implies that each region is
+defined in terms of the surrounding generator points while in turn,
+each region is relatively compact. \textbf{These features of Voronoi
+diagrams effectively satisfy two out of the three criteria for
+partitioning a region: contiguity and simplicity.}
+
+\subsection{Voronoiesque Diagrams}
+The second method we use to create regions is a modification of the
+intuitive construction of Voronoi diagrams. The method does not fall
+under the definition of Voronoi diagrams, but since it is similar to
+Voronoi diagrams, we call them Voronoiesque diagrams. One way to
+visualize the construction of Voronoi diagrams is to imagine shapes
+(determined by the metric) that grow radially outward at a constant
+rate from each generator point. In the Euclidean metric these shapes
+are circles. In the Manhattan metric they are diamonds. In the
+Uniform metric, they are squares. The interior of these shapes form
+the regions of the diagram. As the regions intersect, they form the
+boundary lines for the regions. With this picture in mind, we define
+Voronoiesque diagrams to be the boundaries defined by the
+intersections of these growing shapes. The fundamental difference
+between Voronoi and Voronoiesque diagrams is that Voronoiesque
+diagrams grow the shapes radially outward at a constant rate like
+Voronoi diagrams. Their radial growth is defined with respect to
+some real function on a subset of $\mathbb{R}^2$ (representing the
+space on which the diagram is being generated). See fig.\ref{fig:2}
+
+More rigorously, we define a Voronoi diagram to be the intersections
+of the $\nu_i^{(t)}$'s
+\subsection{Determining Generator Points Using Population Density
+Distributions}
+\subsection{Procudure for Creating Regions using Voronoi and
+Voronoiesque Diagrams}
+
+\section{Redistricting in New York State}
+\subsection{Population Density Map}
+\subsection{Limitations of Image-Based Density Map}
+\subsection{Selecting Generator Points}
+\subsection{Applying Voronoi Diagrams to NY}
+\subsection{Applying Voronoiesque Diagrams to NY}
+\subsection{Precisely Defining Boundary Lines}
+
+\section{Analysis}
+\subsection{New York State Results}
+\subsection{General Results}
+
+\section{Improving the Method}
+\subsection{Boundary Refinement}
+\subsection{Geographic Obstacles}
+
+\section{Bulletin to the Voters of the State of New York}
+
+\section{Conclusion}
+
+\begin{thebibliography}{99}
+\bibitem{1} U.S. Census Bureau. 2005 forst edition tiger/line data, Feb. 2007.
+\end{thebibliography}
+
+\end{document}

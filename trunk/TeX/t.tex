@@ -1,0 +1,247 @@
+\documentclass[a4paper, 10pt, notitlepage, onecolumn]{article}
+\usepackage{bbm}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+% define the title
+\author{Team 1234}
+\title{Sample Document}
+%\pagestyle{plain}
+% \date{}
+\newtheorem{law}{Law}
+\newtheorem{july}[law]{July}
+
+
+
+\begin{document}
+% generate the title
+\maketitle
+
+% insert TOC
+\tableofcontents
+% insert TOF
+\listoffigures
+\section{Start}
+Well, and here begins my lovely article.
+\section{End}
+\ldots{} and here it ends.
+
+\section{Test}
+\label{sec:test}
+% Example 1
+\ldots when Einstein introduced his formula
+\begin{equation}
+e = m \cdot c^2 \; ,
+\end{equation}
+which is at the same time the most widely known and the least well
+understood physical formula.
+
+
+% Example 2
+\ldots from which follows Kirchoff's current law:
+\begin{equation}
+ \sum_{k=1}^{n} I_k = 0 \; .
+\end{equation}
+
+Kirchoff's voltage law can be derived \ldots
+
+
+% Example 3
+\ldots which has several advantages.
+
+\begin{equation}
+ I_D = I_F - I_R
+\end{equation}
+is the core of a very different transistor model. \ldots
+
+My phone number will be changed soon. It will be \mbox{0116 291
+2319}.
+
+The parameter \fbox{\emph{filename}} should contain the name of the
+file.
+
+\today{} \TeX{} \LaTeX{} \LaTeX2e{}
+
+%单引号，双引号
+``Please press the `x' key.''
+
+% 连字符，短折号，长折号，波浪号，温度符号
+daughter-in-law, X-rated\\
+pages 13--67\\
+yes---or no?\\
+$0$, $1$, and $-1$\\
+http://www.ziqiang.net/\~{}liuw\\
+http://www.ziqiang.net/$\sim$liuw\\
+The temperature of today is $-10\,^{\circ}\mathrm{C}$
+
+% ~可以产生一个不可伸长的空格。\@后的句号表示本句结束，即使句号前面是大写字母。
+Mr.~Smith was happy to see his\\
+cf.~Fig.~5\\
+I like BASIC\@. What about you?
+
+\section{New}
+\label{sec:this} A reference to section Test looks like this: ``See
+section~\ref{sec:test} on page~\pageref{sec:test}.'' A reference to
+this section looks like: ``this section~\ref{sec:this} on
+page~\pageref{sec:this}.''
+
+Footnote\footnote{This is a footnote.} are often used.
+
+\textit{You can \emph{emphasize} text if it is set in italics,}
+\textsf{in a \emph{sans-serif} font,} \texttt{or in
+\emph{typewriter} style.}
+
+\section{Environment}
+\flushleft
+\begin{enumerate}
+\item You can mix the list environments to your taste:
+\begin{itemize}
+\item But it might to start to look silly.
+\item[-] With a dash.
+\end{itemize}
+\item Therefore remember:
+\begin{description}
+\item[Stupid] things will not become smart because they are in a
+list.
+\item[Smart] things, though, can be presented beautifully in a list.
+This is a very very very long line!
+\end{description}
+\end{enumerate}
+
+\begin{flushleft}
+This text is \\
+left-aligned. \LaTeX{} is not trying to make each line the same
+length.
+\end{flushleft}
+
+\begin{flushright}
+This text is \\
+right-aligned. \LaTeX{} is not trying to make each line the same
+length.
+\end{flushright}
+
+\begin{center}
+At the center \\of the world.
+\end{center}
+
+A typographical rule of thumb for the line length is:
+\begin{quote}
+On average, no line should be longer than 66 characters.
+\end{quote}
+
+\begin{tabular}{r|l|l}
+\hline ``if don't want this col, leave it empty'' & hexademical & 123\\
+3700 & octal \\
+\cline{2-2} 11111000000 & binary \\
+\hline \hline 1984 & decimal \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|}
+\hline \multicolumn{2}{|c|}{Ene}\\
+\hline A & B \\
+\hline
+\end{tabular}
+
+Figure~\ref{white} is an example of Pop-Art.
+\begin{figure}[!hbp]
+\makebox[\textwidth]{\framebox[5cm]{\rule{0pt}{5cm}}} \caption[Fig.
+1]{Five by Five in centimeters.}\label{white}
+\end{figure}
+
+\section{Math Formula}
+Add $a$ squared and $b$ squared to get $c$ squared. Or, using a more
+mathematical approach: $a^2+b^2=c^2$
+
+\TeX{} is pronounced as $\tau\epsilon\chi$.\\[6pt] 100~m$^{3}$ of
+water\\[6pt] This comes from my $\heartsuit$
+
+Add $a$ squared and $b$ squared to get $c$ squared. Or, using a more
+mathematical approach:
+\begin{displaymath}
+c^{2}=a^{2}+b^{2}
+\end{displaymath}
+Just another line.
+
+\begin{equation}
+\label{eq:eps} \epsilon>0
+\end{equation}
+From (\ref{eq:eps}), we gathered \ldots
+
+Formula in a line: $\lim_{n \to \infty}\sum_{k=1}^n \frac{1}{k^2} =
+\frac{pi^2}{6}$
+
+Formula in displaymath:
+\begin{displaymath}
+\lim_{n \to \infty}\sum_{k=1}^n \frac{1}{k^2} = \frac{pi^2}{6}
+\end{displaymath}
+
+\begin{displaymath}
+\mathbf{X} = \left(
+\begin{array}{ccc}
+x_{11} & x_{12} & \ldots \\
+x_{21} & x_{22} & \ldots \\
+\vdots & \vdots & \ddots
+\end{array} \right)
+\end{displaymath}
+
+\begin{displaymath}
+y = \left\{
+\begin{array}{ll}
+a & \textrm{if $d>c$} \\
+b+x & \textrm{in the morning} \\
+l & \textrm{all day long}
+\end{array} \right.
+\end{displaymath}
+
+% 定理、定义。注意导言区的内容
+\begin{law} \label{law:box}
+Don't hide in the witness box.
+\end{law}
+\begin{july}[The Twelve]
+It could be you! So beware and see law~\ref{law:box}
+\end{july}
+\begin{law}
+No!
+\end{law}
+
+\begin{figure}[!hbp]
+\begin{center}
+\includegraphics[angle=0,width=0.5\textwidth]{1}
+\end{center}
+\end{figure}
+
+Partl~\cite{pa} has proposed that \ldots
+
+
+
+
+\begin{table}[!hbp]
+\tabcolsep 5mm \caption{Aligned numbers}
+\begin{center}
+\begin{tabular}{r@{.}lr@{.}lr@{.}l}
+\hline
+\multicolumn{2}{c}{results}&\multicolumn{2}{c}{results}&\multicolumn{2}{c}{results}
+\\ \hline
+34 &1234   &0&03000 &3&14159 \\
+2&030      &12&30  &456&320 \\
+34123&00  &1    &0 &22385&8\\
+123&65      &0&732  &20&85\\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+
+
+% 参考文献引用自动生成
+\begin{thebibliography}{99}
+\bibitem{pa} H.~Partl: \emph{German \TeX}, Volume~1, Issue~1 (1998)
+\end{thebibliography}
+
+
+% 附录
+\begin{appendix}
+
+\end{appendix}
+
+\end{document}
