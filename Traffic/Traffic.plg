@@ -1,0 +1,43 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Traffic - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\liuw\AppData\Local\Temp\RSP7FE3.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Debug/" /Fp"Debug/Traffic.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Users\liuw\Desktop\Traffic\TrafficDlg.cpp"
+]
+Creating command line "cl.exe @C:\Users\liuw\AppData\Local\Temp\RSP7FE3.tmp" 
+Creating temporary file "C:\Users\liuw\AppData\Local\Temp\RSP7FE4.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/Traffic.pdb" /debug /machine:I386 /out:"Debug/Traffic.exe" /pdbtype:sept 
+.\Debug\NetTraffic.obj
+.\Debug\StdAfx.obj
+.\Debug\Traffic.obj
+.\Debug\TrafficButton.obj
+.\Debug\TrafficDlg.obj
+.\Debug\Traffic.res
+]
+Creating command line "link.exe @C:\Users\liuw\AppData\Local\Temp\RSP7FE4.tmp"
+<h3>Output Window</h3>
+Compiling...
+TrafficDlg.cpp
+c:\users\liuw\desktop\traffic\nt.h(4) : fatal error C1083: Cannot open include file: 'pcap.h': No such file or directory
+执行 cl.exe 时出错.
+Creating command line "bscmake.exe /nologo /o"Debug/Traffic.bsc"  .\Debug\StdAfx.sbr .\Debug\NetTraffic.sbr .\Debug\Traffic.sbr .\Debug\TrafficButton.sbr .\Debug\TrafficDlg.sbr"
+Creating browse info file...
+BSCMAKE: error BK1506 : cannot open file '.\Debug\TrafficDlg.sbr': No such file or directory
+执行 bscmake.exe 时出错.
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+Traffic.exe - 1 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
