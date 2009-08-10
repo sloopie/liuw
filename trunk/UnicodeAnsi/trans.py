@@ -9,9 +9,9 @@ import getopt
 from trans_table import unicode_to_ansi, ansi_to_unicode
 
 # options here
-OUT = None
-IN = None
-ERR = None
+OUT = sys.stdout
+IN = sys.stdin
+ERR = sys.stderr
 CStyle = False
 Table = unicode_to_ansi
 UpperCase = False
@@ -127,16 +127,10 @@ if __name__ == '__main__':
             sys.exit(0)
         if o in ('-o', '--output'):
             OUT = a
-        else:
-            OUT = sys.stdout
         if o in ('-e', '--err'):
             ERR = a
-        else:
-            ERR = sys.stderr
         if o in ('-i', '--input'):
             IN = a
-        else:
-            IN = sys.stdin
         if o in ('-c', '--c-style'):
             CStyle = True
         if o in ('-r', '--reverse'):
