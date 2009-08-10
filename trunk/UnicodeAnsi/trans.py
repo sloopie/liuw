@@ -40,7 +40,7 @@ def usage():
     print 'liuw'
     print '@ LOIS @ CAS'
 
-def doit():
+def do_it():
     global OUT, IN, ERR, CStyle, Table, UpperCase
     line_num = 0
 
@@ -149,5 +149,5 @@ if __name__ == '__main__':
     if InteractiveMode is True:
         process_interactive()
     else:
-        doit()
+        do_it()
 
