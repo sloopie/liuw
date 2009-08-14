@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-#/usr/bin/python
+#!/usr/bin/python
 
 # liuw
 # @ LOIS @ CAS
