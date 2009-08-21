@@ -9,6 +9,8 @@ from collection import C, N
 ############# Customized Section ##############
 def magicfunc(a, b):
     return a ^ b
+
+M = [0x1000, 0x2000, 0xf004, 0xfe74, 0x4014]
 ############# Customized Section ##############
 
 
@@ -55,8 +57,7 @@ def findmagic(M, func):
 
 
 def test():
-##    M = [0x1000, 0x2000, 0xf004, 0xfe74, 0x4014]
-    magic, subset, trans = findmagic(N[:500], magicfunc)
+    magic, subset, trans = findmagic(M, magicfunc)
     if magic is not None:
         print '%04x' % magic
         print ['%04x' % x for x in subset]
