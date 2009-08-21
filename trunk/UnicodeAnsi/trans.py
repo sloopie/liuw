@@ -36,7 +36,7 @@ def usage():
     print '-u, --upper              Upper case hex string. It not specified, output lower '
     print '                         case hex string.'
     print '-h, --help               This stuff...'
-    print '-t, --interactive        Interactive translate.'
+    print '-t, --interactive        Interactive translation.'
     print '-n, --one-line           DO NOT add carriage return. Not available '
     print '                         in interactive mode and c-style mode.'
     print
